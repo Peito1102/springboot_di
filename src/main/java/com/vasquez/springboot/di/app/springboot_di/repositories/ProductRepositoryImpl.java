@@ -3,11 +3,13 @@ package com.vasquez.springboot.di.app.springboot_di.repositories;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import com.vasquez.springboot.di.app.springboot_di.models.Product;
 
-@Repository
+@Primary //el primary se considera cuando no hay qualifiers, es como si fuera por defecto
+@Repository("productList")
 public class ProductRepositoryImpl implements ProductRepository {
     private List<Product> data;
 

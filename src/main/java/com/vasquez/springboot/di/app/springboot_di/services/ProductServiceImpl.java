@@ -3,6 +3,7 @@ package com.vasquez.springboot.di.app.springboot_di.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.vasquez.springboot.di.app.springboot_di.models.Product;
@@ -10,8 +11,14 @@ import com.vasquez.springboot.di.app.springboot_di.repositories.ProductRepositor
 
 @Service
 public class ProductServiceImpl implements ProductService{
-    @Autowired
-    public ProductRepository repository; 
+    //@Autowired
+    //@Qualifier("productList")
+    public ProductRepository repository;
+
+    //@Autowired AUNQUE NO ES NECESARIO PARA EL CONSTRUCTOR
+    public ProductServiceImpl(@Qualifier("productFoo") ProductRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Product> findAll() {
         return repository.findAll().stream().map(p -> {
@@ -33,10 +40,6 @@ public class ProductServiceImpl implements ProductService{
     }
     //@Autowired
     public void setRepository(ProductRepository repository) {
-        this.repository = repository;
-    }
-    //@Autowired AUNQUE NO ES NECESARIO PARA EL CONSTRUCTOR
-    public ProductServiceImpl(ProductRepository repository) {
         this.repository = repository;
     }
 
