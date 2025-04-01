@@ -28,4 +28,16 @@ public class ProductServiceImpl implements ProductService{
         return repository.findById(id);
     }
 
+    public ProductRepository getRepository() {
+        return repository;
+    }
+    //@Autowired
+    public void setRepository(ProductRepository repository) {
+        this.repository = repository;
+    }
+    //@Autowired AUNQUE NO ES NECESARIO PARA EL CONSTRUCTOR
+    public ProductServiceImpl(ProductRepository repository) {
+        this.repository = repository;
+    }
+
 }
