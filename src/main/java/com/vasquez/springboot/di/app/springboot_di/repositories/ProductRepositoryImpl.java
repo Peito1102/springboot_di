@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.context.annotation.RequestScope;
 
 import com.vasquez.springboot.di.app.springboot_di.models.Product;
 
 @Primary //el primary se considera cuando no hay qualifiers, es como si fuera por defecto
+@RequestScope
 @Repository("productList")
 public class ProductRepositoryImpl implements ProductRepository {
     private List<Product> data;

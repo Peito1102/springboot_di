@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.vasquez.springboot.di.app.springboot_di.models.Product;
@@ -11,23 +12,28 @@ import com.vasquez.springboot.di.app.springboot_di.repositories.ProductRepositor
 
 @Service
 public class ProductServiceImpl implements ProductService{
+
+    @Autowired
+    private Environment environment;
+
     //@Autowired
     //@Qualifier("productList")
     public ProductRepository repository;
 
     //@Autowired AUNQUE NO ES NECESARIO PARA EL CONSTRUCTOR
-    public ProductServiceImpl(@Qualifier("productFoo") ProductRepository repository) {
+    public ProductServiceImpl(@Qualifier("productList") ProductRepository repository) {
         this.repository = repository;
     }
 
     public List<Product> findAll() {
         return repository.findAll().stream().map(p -> {
-        Double priceImp = p.getPrice() * 1.25;
+        Double priceImp = p.getPrice() * environment.getProperty("config.price.tax",Double.class);
         //p.setPrice(priceImp.longValue());
         //habia otra forma en la que devolvia un objeto nuevo
-        Product newProd = (Product) p.clone();
-        newProd.setPrice(priceImp.longValue());
-        return newProd;
+        //Product newProd = (Product) p.clone();
+        //newProd.setPrice(priceImp.longValue());
+        p.setPrice(priceImp.longValue());
+        return p;
         }).toList();
     }
 
