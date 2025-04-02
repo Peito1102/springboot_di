@@ -2,9 +2,8 @@ package com.vasquez.springboot.di.app.springboot_di.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.vasquez.springboot.di.app.springboot_di.models.Product;
@@ -13,21 +12,21 @@ import com.vasquez.springboot.di.app.springboot_di.repositories.ProductRepositor
 @Service
 public class ProductServiceImpl implements ProductService{
 
-    @Autowired
-    private Environment environment;
+    @Value("${config.price.tax}")
+    private Double tax;
 
     //@Autowired
     //@Qualifier("productList")
     public ProductRepository repository;
 
     //@Autowired AUNQUE NO ES NECESARIO PARA EL CONSTRUCTOR
-    public ProductServiceImpl(@Qualifier("productList") ProductRepository repository) {
+    public ProductServiceImpl(@Qualifier("productJson") ProductRepository repository) {
         this.repository = repository;
     }
 
     public List<Product> findAll() {
         return repository.findAll().stream().map(p -> {
-        Double priceImp = p.getPrice() * environment.getProperty("config.price.tax",Double.class);
+        Double priceImp = p.getPrice() * tax;
         //p.setPrice(priceImp.longValue());
         //habia otra forma en la que devolvia un objeto nuevo
         //Product newProd = (Product) p.clone();
